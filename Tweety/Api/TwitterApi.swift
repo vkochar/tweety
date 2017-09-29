@@ -15,6 +15,7 @@ private let authorizeUrlString = "\(baseUrl)/oauth/authorize"
 private let accessTokenPath = "oauth/access_token"
 
 private let userPath = "1.1/account/verify_credentials.json"
+private let homeTimelinePath = "1.1/statuses/home_timeline.json"
 
 import Foundation
 import BDBOAuth1Manager
@@ -22,11 +23,10 @@ import BDBOAuth1Manager
 class TwitterApi {
     
     class func login() {
-        
         let twitterClient = BDBOAuth1SessionManager(baseURL: URL(string: baseUrl)!, consumerKey: consumerKey, consumerSecret: consumeerSecret)
 
         twitterClient?.fetchRequestToken(withPath: requestTokenPath, method: "GET", callbackURL: URL(string: "tweety://oauth")!, scope: nil, success: { (credential: BDBOAuth1Credential?) in
-            print("got token")
+            print("got request token")
             
             UIApplication.shared.open(URL(string: "\(authorizeUrlString)?oauth_token=\(credential!.token!)")!)
             
@@ -35,17 +35,32 @@ class TwitterApi {
         })
     }
     
-    
     class func getAuthToken(requestTokenString: String) {
         let twitterClient = BDBOAuth1SessionManager(baseURL: URL(string: baseUrl)!, consumerKey: consumerKey, consumerSecret: consumeerSecret)!
         
         let requestToken = BDBOAuth1Credential(queryString: requestTokenString)
         
         twitterClient.fetchAccessToken(withPath: accessTokenPath, method: "POST", requestToken: requestToken, success: { (credential: BDBOAuth1Credential?) in
-            print(credential?.token)
+            print("got access token")
             
             twitterClient.get(userPath, parameters: nil, progress: nil, success: { (task, response) in
-                print(response)
+                let user = User.fromJSON(response: response!)
+                print(user.name!)
+            }, failure: { (task, error: Error) in
+                print(error)
+            })
+            
+            twitterClient.get(homeTimelinePath, parameters: nil, progress: nil, success: { (task, resposne) in
+                
+                let dictionaries = resposne as! [NSDictionary]
+                
+                var tweets:[Tweet] = []
+                dictionaries.forEach({ (dictionary) in
+                    let tweet = Tweet.fromJSON(response: dictionary)
+                    tweets.append(tweet)
+                    print("got tweets")
+                })
+                
             }, failure: { (task, error: Error) in
                 print(error)
             })
