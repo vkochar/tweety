@@ -10,12 +10,24 @@ import UIKit
 
 class TweetsViewController: UIViewController {
 
+    @IBOutlet weak var tableView: UITableView!
+    
     var tweets:[Tweet] = []
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        tableView.delegate = self
+        tableView.dataSource = self
+        tableView.estimatedRowHeight = 110
+        tableView.rowHeight = UITableViewAutomaticDimension
+        
+        let nib = UINib(nibName: "TweetCell", bundle: nil)
+        tableView.register(nib, forCellReuseIdentifier: "tweetCell")
+        
         TwitterApi.sharedInstance.homeTimeline(sucess: { (tweets) in
             self.tweets = tweets
+            self.tableView.reloadData()
         }) { (error: Error!) in
             //
         }
@@ -39,5 +51,22 @@ class TweetsViewController: UIViewController {
         // Pass the selected object to the new view controller.
     }
     */
+}
 
+extension TweetsViewController: UITableViewDelegate, UITableViewDataSource {
+    func numberOfSections(in tableView: UITableView) -> Int {
+        return 1
+    }
+    
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        return tweets.count
+    }
+    
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        let cell = tableView.dequeueReusableCell(withIdentifier: "tweetCell", for: indexPath) as! TweetCell
+        let tweet = tweets[indexPath.row]
+        cell.tweet = tweet
+        return cell
+    }
+    
 }

@@ -14,9 +14,11 @@ class Tweet: Codable {
     var timestamp: Date?
     var retweetCount: Int? = 0
     var favoritesCount: Int? = 0
+    var user: User?
     
     enum CodingKeys: String, CodingKey {
         case text
+        case user
         case timestamp = "created_at"
         case retweetCount = "retweet_count"
         case favoritesCount = "favorites_count"

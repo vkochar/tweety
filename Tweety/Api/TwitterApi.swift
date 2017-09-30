@@ -80,8 +80,8 @@ class TwitterApi: BDBOAuth1SessionManager {
             dictionaries.forEach{ dictionary in
                 let tweet = Tweet.fromJSON(response: dictionary)
                 tweets.append(tweet)
-                sucess(tweets)
             }
+            sucess(tweets)
         }, failure: { (task, error: Error) in
             print(error)
             failure(error)
