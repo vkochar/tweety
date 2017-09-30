@@ -8,14 +8,32 @@
 
 import UIKit
 
+let logoutNotification = Notification.Name("logout")
+
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
 
     var window: UIWindow?
 
-
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
         // Override point for customization after application launch.
+        if User.currentUser != nil {
+            print("There is a current user")
+            let storyboard  = UIStoryboard(name: "Main", bundle: nil)
+            let tweetsNavigationController = storyboard.instantiateViewController(withIdentifier: "tweetsNavigationController")
+            window?.rootViewController = tweetsNavigationController
+            window?.makeKeyAndVisible()
+        } else {
+            print("There is NO current user")
+        }
+        
+        NotificationCenter.default.addObserver(forName: logoutNotification, object: nil, queue: OperationQueue.main) { (notification) in
+            let storyboard  = UIStoryboard(name: "Main", bundle: nil)
+            let initialViewController = storyboard.instantiateInitialViewController()
+            self.window?.rootViewController = initialViewController
+            self.window?.makeKeyAndVisible()
+        }
+        
         return true
     }
 
@@ -43,7 +61,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     
     func application(_ app: UIApplication, open url: URL, options: [UIApplicationOpenURLOptionsKey : Any] = [:]) -> Bool {
         print(url)
-        TwitterApi.getAuthToken(requestTokenString: url.query!)
+        TwitterApi.sharedInstance.handleOpenUrl(url: url)
         return true
     }
 

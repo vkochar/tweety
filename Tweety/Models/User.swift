@@ -31,5 +31,33 @@ class User: Codable {
         let user = try! decoder.decode(User.self, from: json)
         return user
     }
+    
+    static var _currentUser: User?
+    class var currentUser: User? {
+        get {
+            if (_currentUser == nil) {
+                let defaults = UserDefaults.standard
+                let userData = defaults.object(forKey: "currentUserData") as? Data
+                
+                if let userData = userData {
+                    let decoder = JSONDecoder()
+                    _currentUser = try! decoder.decode(User.self, from: userData)
+                }
+            }
+            return _currentUser
+        }
+        set(user) {
+            let defaults = UserDefaults.standard
+            
+            if let user = user {
+                let jsonEncoder = JSONEncoder()
+                let data = try! jsonEncoder.encode(user)
+                defaults.set(data, forKey: "currentUserData")
+            } else {
+                defaults.removeObject(forKey: "currentUserData")
+            }
+            defaults.synchronize()
+        }
+    }
 }
 

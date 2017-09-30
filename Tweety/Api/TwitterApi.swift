@@ -20,54 +20,76 @@ private let homeTimelinePath = "1.1/statuses/home_timeline.json"
 import Foundation
 import BDBOAuth1Manager
 
-class TwitterApi {
+class TwitterApi: BDBOAuth1SessionManager {
     
-    class func login() {
-        let twitterClient = BDBOAuth1SessionManager(baseURL: URL(string: baseUrl)!, consumerKey: consumerKey, consumerSecret: consumeerSecret)
-
-        twitterClient?.fetchRequestToken(withPath: requestTokenPath, method: "GET", callbackURL: URL(string: "tweety://oauth")!, scope: nil, success: { (credential: BDBOAuth1Credential?) in
+    static let sharedInstance: TwitterApi = TwitterApi(baseURL: URL(string: baseUrl)!, consumerKey: consumerKey, consumerSecret: consumeerSecret)
+    
+    var loginSuccess: (() -> Void)?
+    var loginFailure: ((Error) -> Void)?
+    
+    func login(success: @escaping () -> Void, failure: @escaping (Error) -> Void) {
+        
+        loginSuccess = success
+        loginFailure = failure
+        
+        deauthorize()
+        fetchRequestToken(withPath: requestTokenPath, method: "GET", callbackURL: URL(string: "tweety://oauth")!, scope: nil, success: { (credential: BDBOAuth1Credential?) in
             print("got request token")
-            
             UIApplication.shared.open(URL(string: "\(authorizeUrlString)?oauth_token=\(credential!.token!)")!)
-            
-        }, failure: { (error: Error?) in
-            //
+        }, failure: { (error: Error!) in
+            self.loginFailure?(error)
         })
     }
     
-    class func getAuthToken(requestTokenString: String) {
-        let twitterClient = BDBOAuth1SessionManager(baseURL: URL(string: baseUrl)!, consumerKey: consumerKey, consumerSecret: consumeerSecret)!
+    func handleOpenUrl(url: URL) {
         
+        let requestTokenString = url.query!
         let requestToken = BDBOAuth1Credential(queryString: requestTokenString)
         
-        twitterClient.fetchAccessToken(withPath: accessTokenPath, method: "POST", requestToken: requestToken, success: { (credential: BDBOAuth1Credential?) in
+        fetchAccessToken(withPath: accessTokenPath, method: "POST", requestToken: requestToken, success: { (credential: BDBOAuth1Credential?) in
             print("got access token")
             
-            twitterClient.get(userPath, parameters: nil, progress: nil, success: { (task, response) in
-                let user = User.fromJSON(response: response!)
-                print(user.name!)
-            }, failure: { (task, error: Error) in
-                print(error)
+            self.currentAccount(success: { (user) in
+                User.currentUser = user
+                self.loginSuccess?()
+            }, failure: { (error) in
+                self.loginFailure?(error)
             })
             
-            twitterClient.get(homeTimelinePath, parameters: nil, progress: nil, success: { (task, resposne) in
-                
-                let dictionaries = resposne as! [NSDictionary]
-                
-                var tweets:[Tweet] = []
-                dictionaries.forEach({ (dictionary) in
-                    let tweet = Tweet.fromJSON(response: dictionary)
-                    tweets.append(tweet)
-                    print("got tweets")
-                })
-                
-            }, failure: { (task, error: Error) in
-                print(error)
-            })
-            
-        }, failure: { (error: Error?) in
-            //
+        }, failure: { (error: Error!) in
+            self.loginFailure?(error)
         })
     }
     
+    func currentAccount(success: @escaping (User) -> Void, failure: @escaping (Error) -> Void) {
+        get(userPath, parameters: nil, progress: nil, success: { (task, response) in
+            let user = User.fromJSON(response: response!)
+            print(user.name!)
+            success(user)
+        }, failure: { (task, error: Error) in
+            print(error)
+            failure(error)
+        })
+    }
+    
+    func homeTimeline(sucess: @escaping ([Tweet]) -> Void, failure: @escaping (Error) -> Void) {
+        get(homeTimelinePath, parameters: nil, progress: nil, success: { (task, resposne) in
+            let dictionaries = resposne as! [NSDictionary]
+            var tweets:[Tweet] = []
+            print("got tweets")
+            dictionaries.forEach{ dictionary in
+                let tweet = Tweet.fromJSON(response: dictionary)
+                tweets.append(tweet)
+                sucess(tweets)
+            }
+        }, failure: { (task, error: Error) in
+            print(error)
+            failure(error)
+        })
+    }
+    
+    func logout() {
+        deauthorize()
+        User.currentUser = nil
+    }
 }
