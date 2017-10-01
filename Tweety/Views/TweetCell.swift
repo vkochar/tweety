@@ -27,8 +27,13 @@ class TweetCell: UITableViewCell {
             if let profileUrl = tweet.user?.profileUrl {
                 profileImage.setImageWith(profileUrl)
             }
+            
+            if let handle = tweet.user?.screenname {
+                handleLabel.text = "@\(handle)"
+            }
+            
             nameLabel.text = tweet.user?.name
-            handleLabel.text = tweet.user?.screenname
+            statusLabel.text = tweet?.text
         }
     }
     
@@ -39,6 +44,9 @@ class TweetCell: UITableViewCell {
         
         favoriteButton.setImage(#imageLiteral(resourceName: "favorite"), for: UIControlState.normal)
         favoriteButton.setImage(#imageLiteral(resourceName: "favorite_selected"), for: UIControlState.selected)
+        favoriteButton.imageView?.contentMode = UIViewContentMode.scaleAspectFit
+        replyButton.imageView?.contentMode = UIViewContentMode.scaleAspectFit
+        retweetButton.imageView?.contentMode = UIViewContentMode.scaleAspectFit
     }
     
     @IBAction func onReplyButton(_ sender: UIButton) {

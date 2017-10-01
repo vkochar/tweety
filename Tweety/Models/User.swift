@@ -15,7 +15,7 @@ class User: Codable {
     var profileUrl: URL?
     var tagline: String?
     
-    enum CodinKeys: String, CodingKey {
+    enum CodingKeys: String, CodingKey {
         case name
         case screenname = "screen_name"
         case profileUrl = "profile_image_url_https"
