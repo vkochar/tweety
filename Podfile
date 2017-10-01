@@ -6,6 +6,7 @@ target 'Tweety' do
   use_frameworks!
   pod 'AFNetworking'
   pod 'BDBOAuth1Manager', '2.0.0'
+  pod 'MBProgressHUD'
 
   # Pods for Tweety
 

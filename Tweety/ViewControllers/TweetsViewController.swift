@@ -7,11 +7,12 @@
 //
 
 import UIKit
+import MBProgressHUD
 
 class TweetsViewController: UIViewController {
 
     @IBOutlet weak var tableView: UITableView!
-    
+    var refreshControl: UIRefreshControl!
     var tweets:[Tweet] = []
     
     override func viewDidLoad() {
@@ -25,12 +26,27 @@ class TweetsViewController: UIViewController {
         let nib = UINib(nibName: "TweetCell", bundle: nil)
         tableView.register(nib, forCellReuseIdentifier: "tweetCell")
         
+        refreshControl = UIRefreshControl()
+        refreshControl.addTarget(self, action: #selector(didPullToRefresh(_:)), for: UIControlEvents.valueChanged)
+        tableView.insertSubview(refreshControl, at: 0)
+        
+        MBProgressHUD.showAdded(to: view, animated: true)
+        loadTweets()
+    }
+    
+    private func loadTweets() {
         TwitterApi.sharedInstance.homeTimeline(sucess: { (tweets) in
             self.tweets = tweets
             self.tableView.reloadData()
+            self.refreshControl.endRefreshing()
+            MBProgressHUD.hide(for: self.view, animated: true)
         }) { (error: Error!) in
             //
         }
+    }
+    
+    @objc func didPullToRefresh(_ refreshControl: UIRefreshControl) {
+        loadTweets()
     }
 
     override func didReceiveMemoryWarning() {
