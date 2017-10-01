@@ -20,6 +20,7 @@
 		8BB3D18E1F7B3ACB00121A4D /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 8BB3D18C1F7B3ACB00121A4D /* Main.storyboard */; };
 		8BB3D1901F7B3ACB00121A4D /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 8BB3D18F1F7B3ACB00121A4D /* Assets.xcassets */; };
 		8BB3D1931F7B3ACB00121A4D /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 8BB3D1911F7B3ACB00121A4D /* LaunchScreen.storyboard */; };
+		8BFE71101F81A74300C20347 /* ComposeTweetController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8BFE710F1F81A74300C20347 /* ComposeTweetController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -40,6 +41,7 @@
 		8BB3D18F1F7B3ACB00121A4D /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		8BB3D1921F7B3ACB00121A4D /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		8BB3D1941F7B3ACB00121A4D /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		8BFE710F1F81A74300C20347 /* ComposeTweetController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ComposeTweetController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -76,6 +78,7 @@
 			children = (
 				8B058CE71F7B629F00F5117D /* LoginViewController.swift */,
 				8B3F5F041F7F2B9F0088C798 /* TweetsViewController.swift */,
+				8BFE710F1F81A74300C20347 /* ComposeTweetController.swift */,
 			);
 			path = ViewControllers;
 			sourceTree = "<group>";
@@ -289,6 +292,7 @@
 				8B058D171F7CE00700F5117D /* Tweet.swift in Sources */,
 				8B3F5F051F7F2B9F0088C798 /* TweetsViewController.swift in Sources */,
 				8B32D32E1F818ED200D52E9E /* Date+Compare.swift in Sources */,
+				8BFE71101F81A74300C20347 /* ComposeTweetController.swift in Sources */,
 				8B058D151F7CDFFB00F5117D /* User.swift in Sources */,
 				8BB3D1891F7B3ACB00121A4D /* AppDelegate.swift in Sources */,
 			);

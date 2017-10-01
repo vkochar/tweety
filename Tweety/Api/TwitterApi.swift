@@ -16,6 +16,7 @@ private let accessTokenPath = "oauth/access_token"
 
 private let userPath = "1.1/account/verify_credentials.json"
 private let homeTimelinePath = "1.1/statuses/home_timeline.json"
+private let newTweetPath = "1.1/statuses/update.json"
 
 import Foundation
 import BDBOAuth1Manager
@@ -37,6 +38,7 @@ class TwitterApi: BDBOAuth1SessionManager {
             print("got request token")
             UIApplication.shared.open(URL(string: "\(authorizeUrlString)?oauth_token=\(credential!.token!)")!)
         }, failure: { (error: Error!) in
+            print(error.localizedDescription)
             self.loginFailure?(error)
         })
     }
@@ -53,10 +55,12 @@ class TwitterApi: BDBOAuth1SessionManager {
                 User.currentUser = user
                 self.loginSuccess?()
             }, failure: { (error) in
+                print(error.localizedDescription)
                 self.loginFailure?(error)
             })
             
         }, failure: { (error: Error!) in
+            print(error.localizedDescription)
             self.loginFailure?(error)
         })
     }
@@ -64,10 +68,10 @@ class TwitterApi: BDBOAuth1SessionManager {
     func currentAccount(success: @escaping (User) -> Void, failure: @escaping (Error) -> Void) {
         get(userPath, parameters: nil, progress: nil, success: { (task, response) in
             let user = User.fromJSON(response: response!)
-            print(user.name!)
+            print("got current user")
             success(user)
         }, failure: { (task, error: Error) in
-            print(error)
+            print(error.localizedDescription)
             failure(error)
         })
     }
@@ -83,9 +87,20 @@ class TwitterApi: BDBOAuth1SessionManager {
             }
             sucess(tweets)
         }, failure: { (task, error: Error) in
-            print(error)
+            print(error.localizedDescription)
             failure(error)
         })
+    }
+    
+    func newTweet(tweetMessage: String, success: @escaping () -> (), failure: @escaping (Error) -> ()) {
+        let params = ["status": tweetMessage]
+        post(newTweetPath, parameters: params, progress: nil, success: { (task, response) in
+            print("sent new tweet")
+            success()
+        }) { (task, error: Error!) in
+            print(error.localizedDescription)
+            failure(error)
+        }
     }
     
     func logout() {
