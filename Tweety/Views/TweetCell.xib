@@ -56,10 +56,10 @@
                         <nil key="highlightedColor"/>
                     </label>
                     <button opaque="NO" contentMode="scaleAspectFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="TWY-u9-pVQ">
-                        <rect key="frame" x="76" y="70.5" width="24" height="24"/>
+                        <rect key="frame" x="76" y="78.5" width="14" height="14"/>
                         <constraints>
-                            <constraint firstAttribute="width" constant="24" id="SLN-Aq-CvG"/>
-                            <constraint firstAttribute="height" constant="24" id="bEL-yV-CYC"/>
+                            <constraint firstAttribute="width" constant="14" id="SLN-Aq-CvG"/>
+                            <constraint firstAttribute="height" constant="14" id="bEL-yV-CYC"/>
                         </constraints>
                         <state key="normal" image="reply"/>
                         <connections>
@@ -67,10 +67,10 @@
                         </connections>
                     </button>
                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="nZx-nr-bff">
-                        <rect key="frame" x="122" y="70.5" width="24" height="24"/>
+                        <rect key="frame" x="140" y="76.5" width="18" height="18"/>
                         <constraints>
-                            <constraint firstAttribute="height" constant="24" id="n2d-r3-Wbg"/>
-                            <constraint firstAttribute="width" constant="24" id="rJU-ys-lNz"/>
+                            <constraint firstAttribute="height" constant="18" id="n2d-r3-Wbg"/>
+                            <constraint firstAttribute="width" constant="18" id="rJU-ys-lNz"/>
                         </constraints>
                         <state key="normal" image="retweet"/>
                         <connections>
@@ -78,10 +78,10 @@
                         </connections>
                     </button>
                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="X3w-6U-85V">
-                        <rect key="frame" x="168" y="70.5" width="24" height="24"/>
+                        <rect key="frame" x="208" y="78.5" width="14" height="14"/>
                         <constraints>
-                            <constraint firstAttribute="width" constant="24" id="LFg-cc-H1q"/>
-                            <constraint firstAttribute="height" constant="24" id="njO-zF-X2v"/>
+                            <constraint firstAttribute="width" constant="14" id="LFg-cc-H1q"/>
+                            <constraint firstAttribute="height" constant="14" id="njO-zF-X2v"/>
                         </constraints>
                         <state key="normal" image="favorite"/>
                         <connections>
@@ -90,15 +90,15 @@
                     </button>
                 </subviews>
                 <constraints>
-                    <constraint firstItem="nZx-nr-bff" firstAttribute="top" secondItem="TWY-u9-pVQ" secondAttribute="top" id="19U-PY-jPU"/>
-                    <constraint firstItem="TWY-u9-pVQ" firstAttribute="top" secondItem="fbW-87-0Vp" secondAttribute="bottom" constant="4" id="3pV-ut-nc0"/>
+                    <constraint firstItem="TWY-u9-pVQ" firstAttribute="top" secondItem="fbW-87-0Vp" secondAttribute="bottom" constant="12" id="3pV-ut-nc0"/>
                     <constraint firstAttribute="trailing" secondItem="wc0-mN-WJh" secondAttribute="trailing" constant="16" id="3tR-5Z-Mp4"/>
                     <constraint firstItem="1qw-hb-2ZT" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="top" constant="8" id="4TD-eU-YRk"/>
-                    <constraint firstItem="X3w-6U-85V" firstAttribute="leading" secondItem="nZx-nr-bff" secondAttribute="trailing" constant="22" id="7I4-aw-hyo"/>
+                    <constraint firstItem="X3w-6U-85V" firstAttribute="leading" secondItem="nZx-nr-bff" secondAttribute="trailing" constant="50" id="7I4-aw-hyo"/>
                     <constraint firstItem="wc0-mN-WJh" firstAttribute="baseline" secondItem="eNU-wZ-Qc8" secondAttribute="baseline" id="9oP-DK-Yay"/>
                     <constraint firstItem="fbW-87-0Vp" firstAttribute="top" secondItem="eNU-wZ-Qc8" secondAttribute="bottom" constant="2" id="DnY-4B-lXt"/>
                     <constraint firstItem="1qw-hb-2ZT" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" constant="8" id="FF8-wY-Ek3"/>
                     <constraint firstItem="wc0-mN-WJh" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="fSP-PT-guQ" secondAttribute="trailing" constant="8" id="JsO-Qo-Yfr"/>
+                    <constraint firstItem="nZx-nr-bff" firstAttribute="centerY" secondItem="TWY-u9-pVQ" secondAttribute="centerY" id="Jx4-KD-rvg"/>
                     <constraint firstItem="TWY-u9-pVQ" firstAttribute="leading" secondItem="fbW-87-0Vp" secondAttribute="leading" id="M55-1i-nj9"/>
                     <constraint firstAttribute="trailing" secondItem="1qw-hb-2ZT" secondAttribute="trailing" constant="16" id="OhX-mF-ovI"/>
                     <constraint firstItem="eNU-wZ-Qc8" firstAttribute="leading" secondItem="qIU-4V-AuM" secondAttribute="trailing" constant="8" id="SWB-iP-9SJ"/>
@@ -106,13 +106,13 @@
                     <constraint firstItem="qIU-4V-AuM" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" constant="8" id="Z1p-Lv-0lB"/>
                     <constraint firstItem="qIU-4V-AuM" firstAttribute="top" secondItem="1qw-hb-2ZT" secondAttribute="bottom" constant="8" id="a4y-yk-ZPc"/>
                     <constraint firstItem="fbW-87-0Vp" firstAttribute="leading" secondItem="eNU-wZ-Qc8" secondAttribute="leading" id="d05-8N-AcH"/>
-                    <constraint firstItem="X3w-6U-85V" firstAttribute="top" secondItem="TWY-u9-pVQ" secondAttribute="top" id="hLW-mv-BYV"/>
+                    <constraint firstItem="X3w-6U-85V" firstAttribute="centerY" secondItem="TWY-u9-pVQ" secondAttribute="centerY" id="dce-5K-wqK"/>
                     <constraint firstItem="fSP-PT-guQ" firstAttribute="leading" secondItem="eNU-wZ-Qc8" secondAttribute="trailing" constant="4" id="j7h-x0-6u9"/>
-                    <constraint firstAttribute="bottom" relation="greaterThanOrEqual" secondItem="TWY-u9-pVQ" secondAttribute="bottom" constant="8" id="jEB-oi-75C"/>
+                    <constraint firstAttribute="bottom" relation="greaterThanOrEqual" secondItem="TWY-u9-pVQ" secondAttribute="bottom" constant="10" id="jEB-oi-75C"/>
                     <constraint firstAttribute="bottom" relation="greaterThanOrEqual" secondItem="qIU-4V-AuM" secondAttribute="bottom" constant="10" id="jRG-rq-HxT"/>
                     <constraint firstItem="eNU-wZ-Qc8" firstAttribute="top" secondItem="qIU-4V-AuM" secondAttribute="top" id="lrh-YQ-mag"/>
                     <constraint firstAttribute="trailing" secondItem="fbW-87-0Vp" secondAttribute="trailing" constant="16" id="ms7-xK-Q3l"/>
-                    <constraint firstItem="nZx-nr-bff" firstAttribute="leading" secondItem="TWY-u9-pVQ" secondAttribute="trailing" constant="22" id="x2n-FY-Nqb"/>
+                    <constraint firstItem="nZx-nr-bff" firstAttribute="leading" secondItem="TWY-u9-pVQ" secondAttribute="trailing" constant="50" id="x2n-FY-Nqb"/>
                 </constraints>
             </tableViewCellContentView>
             <viewLayoutGuide key="safeArea" id="njF-e1-oar"/>
@@ -131,8 +131,8 @@
         </tableViewCell>
     </objects>
     <resources>
-        <image name="favorite" width="11" height="11"/>
-        <image name="reply" width="11" height="11"/>
-        <image name="retweet" width="11" height="11"/>
+        <image name="favorite" width="25" height="25"/>
+        <image name="reply" width="25" height="25"/>
+        <image name="retweet" width="25" height="25"/>
     </resources>
 </document>

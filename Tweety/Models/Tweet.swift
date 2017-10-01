@@ -9,12 +9,14 @@
 import Foundation
 
 class Tweet: Codable {
-
+    
+    var tweetId: String?
     var text: String?
     var timestamp: Date?
     var retweetCount: Int? = 0
     var favoritesCount: Int? = 0
     var user: User?
+    var isFavorite: Bool = false
     
     enum CodingKeys: String, CodingKey {
         case text
@@ -22,6 +24,8 @@ class Tweet: Codable {
         case timestamp = "created_at"
         case retweetCount = "retweet_count"
         case favoritesCount = "favorites_count"
+        case isFavorite = "favorited"
+        case tweetId = "id_str"
     }
     
     class func fromJSON(response: Any)-> Tweet {

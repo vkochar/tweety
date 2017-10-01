@@ -34,19 +34,22 @@ class TweetCell: UITableViewCell {
             
             nameLabel.text = tweet.user?.name
             statusLabel.text = tweet?.text
+            
+            timeSinceTweetLabel.text = Date().getTimeDifference(pastDate: tweet.timestamp)
+            
+            favoriteButton.isSelected = tweet.isFavorite
         }
     }
     
     override func awakeFromNib() {
         super.awakeFromNib()
-        profileImage.layer.cornerRadius = 3
+        profileImage.layer.cornerRadius = 4
         profileImage.clipsToBounds = true
         
         favoriteButton.setImage(#imageLiteral(resourceName: "favorite"), for: UIControlState.normal)
         favoriteButton.setImage(#imageLiteral(resourceName: "favorite_selected"), for: UIControlState.selected)
-        favoriteButton.imageView?.contentMode = UIViewContentMode.scaleAspectFit
-        replyButton.imageView?.contentMode = UIViewContentMode.scaleAspectFit
-        retweetButton.imageView?.contentMode = UIViewContentMode.scaleAspectFit
+        retweetButton.setImage(#imageLiteral(resourceName: "retweet"), for: UIControlState.normal)
+        retweetButton.setImage(#imageLiteral(resourceName: "retweet_selected"), for: UIControlState.selected)
     }
     
     @IBAction func onReplyButton(_ sender: UIButton) {
