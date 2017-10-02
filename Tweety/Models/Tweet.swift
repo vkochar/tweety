@@ -23,7 +23,7 @@ class Tweet: Codable {
         case user
         case timestamp = "created_at"
         case retweetCount = "retweet_count"
-        case favoritesCount = "favorites_count"
+        case favoritesCount = "favorite_count"
         case isFavorite = "favorited"
         case tweetId = "id_str"
     }

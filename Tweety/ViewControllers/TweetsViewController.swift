@@ -58,15 +58,20 @@ class TweetsViewController: UIViewController {
         TwitterApi.sharedInstance.logout()
         NotificationCenter.default.post(name: logoutNotification, object: nil)
     }
-    /*
+    
     // MARK: - Navigation
 
     // In a storyboard-based application, you will often want to do a little preparation before navigation
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         // Get the new view controller using segue.destinationViewController.
         // Pass the selected object to the new view controller.
+        if segue.identifier == "tweetDetailSegue" {
+            let vc = segue.destination as! TweetDetailViewController
+            let tweetCell = sender as! TweetCell
+            let row = tableView.indexPath(for: tweetCell)!.row
+            vc.tweet = tweets[row]
+        }
     }
-    */
 }
 
 extension TweetsViewController: UITableViewDelegate, UITableViewDataSource {
@@ -80,6 +85,7 @@ extension TweetsViewController: UITableViewDelegate, UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)
+        performSegue(withIdentifier: "tweetDetailSegue", sender: tableView.cellForRow(at: indexPath))
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
@@ -88,5 +94,4 @@ extension TweetsViewController: UITableViewDelegate, UITableViewDataSource {
         cell.tweet = tweet
         return cell
     }
-    
 }
