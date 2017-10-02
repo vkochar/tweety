@@ -9,6 +9,9 @@
 import UIKit
 import MBProgressHUD
 
+let reloadHomeTimeline = Notification.Name("reloadHomeTimeline")
+let newTweet = Notification.Name("newTweet")
+
 class TweetsViewController: UIViewController {
 
     @IBOutlet weak var tableView: UITableView!
@@ -32,6 +35,18 @@ class TweetsViewController: UIViewController {
         
         MBProgressHUD.showAdded(to: view, animated: true)
         loadTweets()
+        
+        // Listen to reloadHomeTimeline notificaton
+        NotificationCenter.default.addObserver(forName: reloadHomeTimeline, object: nil, queue: OperationQueue.main) { (notification) in
+            self.refreshControl.beginRefreshing()
+            self.loadTweets()
+        }
+        
+        // Listen to newTweet notificaton
+        NotificationCenter.default.addObserver(forName: newTweet, object: nil, queue: OperationQueue.main) { (notification) in
+            self.tweets.insert(notification.object as! Tweet, at: 0)
+            self.tableView.reloadData()
+        }
     }
     
     private func loadTweets() {
@@ -41,7 +56,7 @@ class TweetsViewController: UIViewController {
             self.refreshControl.endRefreshing()
             MBProgressHUD.hide(for: self.view, animated: true)
         }) { (error: Error!) in
-            //
+            print("\\m/")
         }
     }
     
@@ -67,6 +82,12 @@ class TweetsViewController: UIViewController {
         // Pass the selected object to the new view controller.
         if segue.identifier == "tweetDetailSegue" {
             let vc = segue.destination as! TweetDetailViewController
+            let tweetCell = sender as! TweetCell
+            let row = tableView.indexPath(for: tweetCell)!.row
+            vc.tweet = tweets[row]
+        } else if segue.identifier == "replySegue" {
+            let navigationController = segue.destination as! UINavigationController
+            let vc = navigationController.topViewController as! ReplyTweetViewController
             let tweetCell = sender as! TweetCell
             let row = tableView.indexPath(for: tweetCell)!.row
             vc.tweet = tweets[row]
@@ -97,7 +118,7 @@ extension TweetsViewController: TweetCellDelegate {
     }
     
     func tweetCell(_ tweetCell: TweetCell, didTapReply tweet: Tweet) {
-        //
+        performSegue(withIdentifier: "replySegue", sender: tweetCell)
     }
     
     func tweetCell(_ tweetCell: TweetCell, didTapRetweet tweet: Tweet) {

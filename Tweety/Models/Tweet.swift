@@ -19,6 +19,13 @@ class Tweet: Codable {
     var isFavorite: Bool = false
     var retweeted: Bool = false
     
+    convenience init(currentUser: User, tweetMessage: String, createdAt: Date) {
+        self.init()
+        user = currentUser
+        text = tweetMessage
+        timestamp = createdAt
+    }
+    
     enum CodingKeys: String, CodingKey {
         case text
         case user

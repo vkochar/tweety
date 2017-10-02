@@ -98,14 +98,12 @@ class TwitterApi: BDBOAuth1SessionManager {
     
     private func update(params: Any?, success: @escaping () -> Void, failure: @escaping (Error) -> Void) {
         post(updatePath, parameters: params, progress: nil, success: { (task, response) in
-            print("sent new tweet")
             success()
         }) { (task, error: Error!) in
             print(error.localizedDescription)
             failure(error)
         }
     }
-    
     
     func newTweet(tweetMessage: String, success: @escaping () -> Void, failure: @escaping (Error) -> Void) {
         let params = ["status": tweetMessage]

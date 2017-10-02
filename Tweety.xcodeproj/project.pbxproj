@@ -22,6 +22,7 @@
 		8BB3D1931F7B3ACB00121A4D /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 8BB3D1911F7B3ACB00121A4D /* LaunchScreen.storyboard */; };
 		8BFE71101F81A74300C20347 /* ComposeTweetController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8BFE710F1F81A74300C20347 /* ComposeTweetController.swift */; };
 		8BFE71121F81B22300C20347 /* TweetDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8BFE71111F81B22300C20347 /* TweetDetailViewController.swift */; };
+		8BFE71141F81D6A400C20347 /* ReplyTweetViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8BFE71131F81D6A400C20347 /* ReplyTweetViewController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -44,6 +45,7 @@
 		8BB3D1941F7B3ACB00121A4D /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		8BFE710F1F81A74300C20347 /* ComposeTweetController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ComposeTweetController.swift; sourceTree = "<group>"; };
 		8BFE71111F81B22300C20347 /* TweetDetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TweetDetailViewController.swift; sourceTree = "<group>"; };
+		8BFE71131F81D6A400C20347 /* ReplyTweetViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReplyTweetViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -82,6 +84,7 @@
 				8B3F5F041F7F2B9F0088C798 /* TweetsViewController.swift */,
 				8BFE710F1F81A74300C20347 /* ComposeTweetController.swift */,
 				8BFE71111F81B22300C20347 /* TweetDetailViewController.swift */,
+				8BFE71131F81D6A400C20347 /* ReplyTweetViewController.swift */,
 			);
 			path = ViewControllers;
 			sourceTree = "<group>";
@@ -299,6 +302,7 @@
 				8B058D151F7CDFFB00F5117D /* User.swift in Sources */,
 				8BB3D1891F7B3ACB00121A4D /* AppDelegate.swift in Sources */,
 				8BFE71121F81B22300C20347 /* TweetDetailViewController.swift in Sources */,
+				8BFE71141F81D6A400C20347 /* ReplyTweetViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
