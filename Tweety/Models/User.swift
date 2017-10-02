@@ -56,6 +56,7 @@ class User: Codable {
             } else {
                 defaults.removeObject(forKey: "currentUserData")
             }
+            _currentUser = nil
             defaults.synchronize()
         }
     }
