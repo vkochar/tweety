@@ -2,7 +2,7 @@
 
 **Tweety** is a basic twitter app to read and compose tweets from the [Twitter API](https://apps.twitter.com/).
 
-Time spent: **X** hours spent in total
+Time spent: **19** hours spent in total
 
 ## User Stories
 
@@ -27,7 +27,7 @@ The following **optional** features are implemented:
 
 The following **additional** features are implemented:
 
-- [x] Added placeholder text on UITextView on the New tweet and reply tweet screen.
+- [x] Added placeholder text on UITextView on the new tweet and reply tweet screen.
 - [x] Tech: Used **Codable** [Swift4] to parse, encode/decode JSON.
 
 Please list two areas of the assignment you'd like to **discuss further with your peers** during the next class (examples include better ways to implement something, how to extend your app in certain ways, etc):

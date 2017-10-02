@@ -10,6 +10,7 @@ import UIKit
 import MBProgressHUD
 
 let placeHolderText = "Tweet here..."
+let maxCharacter: Int = 140
 
 class ComposeTweetController: UIViewController, UITextViewDelegate {
 
@@ -89,7 +90,7 @@ class ComposeTweetController: UIViewController, UITextViewDelegate {
             textView.textColor = .black
         }
         
-        return true
+        return (textView.text?.utf16.count ?? 0) + text.utf16.count - range.length <= maxCharacter
     }
     
     func textViewDidChange(_ textView: UITextView) {
@@ -99,6 +100,9 @@ class ComposeTweetController: UIViewController, UITextViewDelegate {
             textView.textColor = .lightGray
             textView.selectedTextRange = textView.textRange(from: textView.beginningOfDocument, to: textView.beginningOfDocument)
         }
+        
+        let count = textView.text?.utf16.count ?? 0
+        characterCountLabel.text = "\(maxCharacter - count)"
     }
     
     func textViewDidChangeSelection(_ textView: UITextView) {

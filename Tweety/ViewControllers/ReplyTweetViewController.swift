@@ -85,7 +85,7 @@ class ReplyTweetViewController: UIViewController, UITextViewDelegate {
             textView.textColor = .black
         }
         
-        return true
+        return (textView.text?.utf16.count ?? 0) + text.utf16.count - range.length <= maxCharacter
     }
     
     func textViewDidChange(_ textView: UITextView) {
