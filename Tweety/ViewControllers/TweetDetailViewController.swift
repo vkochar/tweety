@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import MBProgressHUD
 
 class TweetDetailViewController: UIViewController {
     
@@ -22,6 +23,8 @@ class TweetDetailViewController: UIViewController {
     @IBOutlet weak var favoriteButton: UIButton!
     
     var tweet: Tweet!
+    var favorites: Int!
+    var retweets: Int!
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -32,6 +35,9 @@ class TweetDetailViewController: UIViewController {
         
         favoriteButton.setImage(#imageLiteral(resourceName: "favorite"), for: UIControlState.normal)
         favoriteButton.setImage(#imageLiteral(resourceName: "favorite_selected"), for: UIControlState.selected)
+        
+        retweetButton.setImage(#imageLiteral(resourceName: "retweet"), for: UIControlState.normal)
+        retweetButton.setImage(#imageLiteral(resourceName: "retweet_selected"), for: UIControlState.selected)
         
         showDetails()
     }
@@ -51,13 +57,14 @@ class TweetDetailViewController: UIViewController {
         
         tweetLabel.text = tweet.text
         
-        let favorites = tweet.favoritesCount == nil ? 0 : tweet.favoritesCount!
-        numberOfLikesLabel.text = String(describing: favorites)
+        favorites = tweet.favoritesCount == nil ? 0 : tweet.favoritesCount!
+        numberOfLikesLabel.text = "\(favorites!)"
         
-        let retweets = tweet.retweetCount == nil ? 0 : tweet.retweetCount!
-        numberOfRetweetsLabel.text = String(describing: retweets)
+        retweets = tweet.retweetCount == nil ? 0 : tweet.retweetCount!
+        numberOfRetweetsLabel.text = "\(retweets!)"
         
         favoriteButton.isSelected = tweet.isFavorite
+        retweetButton.isSelected = tweet.retweeted
         
         let dateFormatter = DateFormatter()
         dateFormatter.dateFormat = "MM/dd/yyyy, hh:mm a"
@@ -69,9 +76,62 @@ class TweetDetailViewController: UIViewController {
     }
 
     @IBAction func onRetweet(_ sender: Any) {
+        MBProgressHUD.showAdded(to: view, animated: true)
+        if (tweet.retweeted){
+            TwitterApi.sharedInstance.unRetweet(tweetId: tweet.tweetId!, success: {
+                MBProgressHUD.hide(for: self.view, animated: true)
+                self.retweetButton.isSelected = false
+                self.tweet.retweeted = false
+                self.updateRetweets(by: -1)
+            }) { (error) in
+                MBProgressHUD.hide(for: self.view, animated: true)
+            }
+        } else {
+            TwitterApi.sharedInstance.retweet(tweetId: tweet.tweetId!, success: {
+                MBProgressHUD.hide(for: self.view, animated: true)
+                self.retweetButton.isSelected = true
+                self.tweet.retweeted = true
+                self.updateRetweets(by: 1)
+            }) { (error) in
+                MBProgressHUD.hide(for: self.view, animated: true)
+            }
+        }
     }
     
     @IBAction func onFavorite(_ sender: Any) {
+        MBProgressHUD.showAdded(to: view, animated: true)
+        if (tweet.isFavorite) {
+            TwitterApi.sharedInstance.removeFavorite(tweetId: tweet.tweetId!, success: {
+                MBProgressHUD.hide(for: self.view, animated: true)
+                self.favoriteButton.isSelected = false
+                self.tweet.isFavorite = false
+                self.updateLikes(by: -1)
+            }, failure: { (error) in
+                MBProgressHUD.hide(for: self.view, animated: true)
+            })
+        } else {
+            TwitterApi.sharedInstance.createFavorite(tweetId: tweet.tweetId!, success: {
+                MBProgressHUD.hide(for: self.view, animated: true)
+                self.favoriteButton.isSelected = true
+                self.tweet.isFavorite = true
+                self.updateLikes(by: 1)
+            }, failure: { (error) in
+                MBProgressHUD.hide(for: self.view, animated: true)
+                //
+            })
+        }
+    }
+    
+    private func updateLikes(by number: Int) {
+        favorites = favorites + number
+        tweet.favoritesCount = favorites
+        numberOfLikesLabel.text = "\(favorites!)"
+    }
+    
+    private func updateRetweets(by number: Int) {
+        retweets = retweets + number
+        tweet.retweetCount = retweets
+        numberOfRetweetsLabel.text = "\(retweets!)"
     }
     
     override func didReceiveMemoryWarning() {

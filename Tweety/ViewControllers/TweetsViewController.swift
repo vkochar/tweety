@@ -74,6 +74,66 @@ class TweetsViewController: UIViewController {
     }
 }
 
+extension TweetsViewController: TweetCellDelegate {
+    func tweetCell(_ tweetCell: TweetCell, didTapFavorite tweet: Tweet) {
+        MBProgressHUD.showAdded(to: view, animated: true)
+        if (tweet.isFavorite) {
+            TwitterApi.sharedInstance.removeFavorite(tweetId: tweet.tweetId!, success: {
+                MBProgressHUD.hide(for: self.view, animated: true)
+                self.updateLikes(by: -1, tweet: tweet)
+                self.tableView.reloadData()
+            }, failure: { (error) in
+                MBProgressHUD.hide(for: self.view, animated: true)
+            })
+        } else {
+            TwitterApi.sharedInstance.createFavorite(tweetId: tweet.tweetId!, success: {
+                MBProgressHUD.hide(for: self.view, animated: true)
+                self.updateLikes(by: 1, tweet: tweet)
+                self.tableView.reloadData()
+            }, failure: { (error) in
+                MBProgressHUD.hide(for: self.view, animated: true)
+            })
+        }
+    }
+    
+    func tweetCell(_ tweetCell: TweetCell, didTapReply tweet: Tweet) {
+        //
+    }
+    
+    func tweetCell(_ tweetCell: TweetCell, didTapRetweet tweet: Tweet) {
+        MBProgressHUD.showAdded(to: view, animated: true)
+        if (tweet.retweeted){
+            TwitterApi.sharedInstance.unRetweet(tweetId: tweet.tweetId!, success: {
+                MBProgressHUD.hide(for: self.view, animated: true)
+                self.updateRetweets(by: -1, tweet: tweet)
+                self.tableView.reloadData()
+            }) { (error) in
+                MBProgressHUD.hide(for: self.view, animated: true)
+            }
+        } else {
+            TwitterApi.sharedInstance.retweet(tweetId: tweet.tweetId!, success: {
+                MBProgressHUD.hide(for: self.view, animated: true)
+                self.updateRetweets(by: 1, tweet: tweet)
+                self.tableView.reloadData()
+            }) { (error) in
+                MBProgressHUD.hide(for: self.view, animated: true)
+            }
+        }
+    }
+    
+    private func updateLikes(by number: Int, tweet: Tweet) {
+        let favorites = tweet.favoritesCount! + number
+        tweet.favoritesCount = favorites
+        tweet.isFavorite = !tweet.isFavorite
+    }
+    
+    private func updateRetweets(by number: Int, tweet: Tweet) {
+        let retweets = tweet.retweetCount! + number
+        tweet.retweetCount = retweets
+        tweet.retweeted = !tweet.retweeted
+    }
+}
+
 extension TweetsViewController: UITableViewDelegate, UITableViewDataSource {
     func numberOfSections(in tableView: UITableView) -> Int {
         return 1
@@ -92,6 +152,7 @@ extension TweetsViewController: UITableViewDelegate, UITableViewDataSource {
         let cell = tableView.dequeueReusableCell(withIdentifier: "tweetCell", for: indexPath) as! TweetCell
         let tweet = tweets[indexPath.row]
         cell.tweet = tweet
+        cell.delegate = self
         return cell
     }
 }

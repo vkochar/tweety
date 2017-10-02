@@ -16,7 +16,11 @@ private let accessTokenPath = "oauth/access_token"
 
 private let userPath = "1.1/account/verify_credentials.json"
 private let homeTimelinePath = "1.1/statuses/home_timeline.json"
-private let newTweetPath = "1.1/statuses/update.json"
+private let updatePath = "1.1/statuses/update.json"
+private let retweetPath = "1.1/statuses/retweet"
+private let unRetweetPath = "1.1/statuses/unretweet"
+private let createFavoritePath = "1.1/favorites/create.json"
+private let removeFavoritePath = "1.1/favorites/destroy.json"
 
 import Foundation
 import BDBOAuth1Manager
@@ -70,7 +74,7 @@ class TwitterApi: BDBOAuth1SessionManager {
             let user = User.fromJSON(response: response!)
             print("got current user")
             success(user)
-        }, failure: { (task, error: Error) in
+        }, failure: { (task, error: Error!) in
             print(error.localizedDescription)
             failure(error)
         })
@@ -86,16 +90,66 @@ class TwitterApi: BDBOAuth1SessionManager {
                 tweets.append(tweet)
             }
             sucess(tweets)
-        }, failure: { (task, error: Error) in
+        }, failure: { (task, error: Error!) in
             print(error.localizedDescription)
             failure(error)
         })
     }
     
-    func newTweet(tweetMessage: String, success: @escaping () -> (), failure: @escaping (Error) -> ()) {
-        let params = ["status": tweetMessage]
-        post(newTweetPath, parameters: params, progress: nil, success: { (task, response) in
+    private func update(params: Any?, success: @escaping () -> Void, failure: @escaping (Error) -> Void) {
+        post(updatePath, parameters: params, progress: nil, success: { (task, response) in
             print("sent new tweet")
+            success()
+        }) { (task, error: Error!) in
+            print(error.localizedDescription)
+            failure(error)
+        }
+    }
+    
+    
+    func newTweet(tweetMessage: String, success: @escaping () -> Void, failure: @escaping (Error) -> Void) {
+        let params = ["status": tweetMessage]
+        update(params: params, success: success, failure: failure)
+    }
+    
+    func reply(tweetMessage: String, tweetId: String, success: @escaping () ->(), failure: @escaping (Error) -> ()) {
+        let params = ["status": tweetMessage, "in_reply_to_status_id": tweetId]
+        update(params: params, success: success, failure: failure)
+    }
+    
+    func retweet(tweetId: String, success: @escaping () -> (), failure: @escaping (Error) -> ()) {
+        let pathWithTweetId = "\(retweetPath)/\(tweetId).json"
+        post(pathWithTweetId, parameters: nil, progress: nil, success: { (task, response) in
+            success()
+        }) { (task, error: Error!) in
+            print(error.localizedDescription)
+            failure(error)
+        }
+    }
+    
+    func unRetweet(tweetId: String, success: @escaping () -> (), failure: @escaping (Error) -> ()) {
+        let pathWithTweetId = "\(unRetweetPath)/\(tweetId).json"
+        post(pathWithTweetId, parameters: nil, progress: nil, success: { (task, response) in
+            success()
+        }) { (task, error: Error!) in
+            print(error.localizedDescription)
+            failure(error)
+        }
+    }
+    
+    func createFavorite(tweetId: String, success: @escaping () -> (), failure: @escaping (Error) -> ()) {
+        let params = ["id": tweetId]
+        post(createFavoritePath, parameters: params, progress: nil, success: { (task, response) in
+            success()
+        }) { (task, error: Error!) in
+            print(error.localizedDescription)
+            failure(error)
+        }
+    }
+    
+    func removeFavorite(tweetId: String, success: @escaping () -> (), failure: @escaping (Error) -> ()) {
+        let params = ["id": tweetId]
+        post(removeFavoritePath, parameters: params, progress: nil, success: { (task, response) in
             success()
         }) { (task, error: Error!) in
             print(error.localizedDescription)
