@@ -80,7 +80,11 @@ class TwitterApi: BDBOAuth1SessionManager {
         })
     }
     
-    func homeTimeline(sucess: @escaping ([Tweet]) -> Void, failure: @escaping (Error) -> Void) {
+    func homeTimeline(_ maxId: String?, sucess: @escaping ([Tweet]) -> Void, failure: @escaping (Error) -> Void) {
+        var params: [String:String] = [:]
+        if maxId != nil {
+            params["max_id"] = maxId
+        }
         get(homeTimelinePath, parameters: nil, progress: nil, success: { (task, resposne) in
             let dictionaries = resposne as! [NSDictionary]
             var tweets:[Tweet] = []

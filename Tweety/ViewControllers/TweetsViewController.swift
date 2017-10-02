@@ -18,6 +18,8 @@ class TweetsViewController: UIViewController {
     var refreshControl: UIRefreshControl!
     var tweets:[Tweet] = []
     
+    var isLoading = false
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -50,11 +52,23 @@ class TweetsViewController: UIViewController {
     }
     
     private func loadTweets() {
-        TwitterApi.sharedInstance.homeTimeline(sucess: { (tweets) in
+        TwitterApi.sharedInstance.homeTimeline(nil, sucess: { (tweets) in
             self.tweets = tweets
             self.tableView.reloadData()
             self.refreshControl.endRefreshing()
             MBProgressHUD.hide(for: self.view, animated: true)
+        }) { (error: Error!) in
+            print("\\m/")
+        }
+    }
+    
+    private func loadPage(maxId: String) {
+        TwitterApi.sharedInstance.homeTimeline(maxId, sucess: { (tweets) in
+            self.tweets.append(contentsOf: tweets)
+            self.tableView.reloadData()
+            self.refreshControl.endRefreshing()
+            MBProgressHUD.hide(for: self.view, animated: true)
+            self.isLoading = false
         }) { (error: Error!) in
             print("\\m/")
         }
@@ -174,6 +188,12 @@ extension TweetsViewController: UITableViewDelegate, UITableViewDataSource {
         let tweet = tweets[indexPath.row]
         cell.tweet = tweet
         cell.delegate = self
+        
+        if ((indexPath.row >= tweets.count - 1) && !isLoading) {
+            isLoading = true
+            loadPage(maxId: tweet.tweetId!)
+        }
+        
         return cell
     }
 }
